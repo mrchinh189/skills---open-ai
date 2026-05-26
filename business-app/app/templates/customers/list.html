@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="flex justify-between items-center mb-4">
+  <h1 class="text-2xl font-bold">Khách hàng & Lead</h1>
+  <a href="/customers/new" class="bg-slate-900 text-white px-4 py-2 rounded">+ Thêm khách hàng</a>
+</div>
+<form class="mb-4">
+  <input name="q" value="{{ q }}" placeholder="Tìm theo tên..." class="border rounded px-3 py-2 w-64" />
+</form>
+<div class="bg-white rounded-lg shadow overflow-x-auto">
+<table class="w-full text-sm">
+  <thead class="bg-slate-50 text-slate-600 text-left">
+    <tr>
+      <th class="p-3">Tên</th><th>MST</th><th>Liên hệ</th>
+      <th>Trạng thái</th><th class="text-right">Điểm</th><th></th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for c in items %}
+    <tr class="border-t">
+      <td class="p-3 font-medium">{{ c.name }}</td>
+      <td>{{ c.tax_code or "-" }}</td>
+      <td>{{ c.phone or c.email or "-" }}</td>
+      <td>
+        <form method="post" action="/customers/{{ c.id }}/status" class="inline">
+          <select name="new_status" onchange="this.form.submit()" class="border rounded px-2 py-1 text-xs">
+            {% for s in ["NEW","CONTACTED","QUALIFIED","PROPOSAL","NEGOTIATION","WON","LOST","DISQUALIFIED"] %}
+              <option value="{{ s }}" {% if c.lead_status.value == s %}selected{% endif %}>{{ s }}</option>
+            {% endfor %}
+          </select>
+        </form>
+      </td>
+      <td class="text-right">
+        <span class="px-2 py-1 rounded text-xs
+          {% if c.lead_score >= 70 %}bg-emerald-100 text-emerald-700
+          {% elif c.lead_score >= 40 %}bg-amber-100 text-amber-700
+          {% else %}bg-slate-100 text-slate-600{% endif %}">{{ c.lead_score }}</span>
+      </td>
+      <td></td>
+    </tr>
+  {% else %}
+    <tr><td colspan="6" class="p-6 text-center text-slate-400">Chưa có khách hàng</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}

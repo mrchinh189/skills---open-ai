@@ -1,0 +1,18 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: sqlite:////data/vbiz.db
+      SECRET_KEY: change-me-in-production-please-32chars
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_MODEL: gpt-4o-mini
+      SKILLS_DIR: /skills/.business-vn
+      ENV: prod
+    volumes:
+      - vbiz_data:/data
+      - ../skills/.business-vn:/skills/.business-vn:ro
+
+volumes:
+  vbiz_data:

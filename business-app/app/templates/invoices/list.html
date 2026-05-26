@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="text-2xl font-bold mb-4">Hoá đơn VAT</h1>
+<div class="bg-white rounded-lg shadow overflow-x-auto">
+<table class="w-full text-sm">
+  <thead class="bg-slate-50 text-left">
+    <tr><th class="p-3">Ký hiệu</th><th>Số</th><th>Ngày</th><th>Khách hàng</th>
+      <th class="text-right">Tiền hàng</th><th class="text-right">VAT</th><th class="text-right">Tổng</th><th></th></tr>
+  </thead>
+  <tbody>
+  {% for inv in items %}
+    <tr class="border-t">
+      <td class="p-3 font-mono">{{ inv.serial }}</td>
+      <td class="font-mono">{{ inv.number }}</td>
+      <td>{{ inv.issue_date }}</td>
+      <td>{{ inv.customer.name }}</td>
+      <td class="text-right">{{ inv.total|vnd }} ₫</td>
+      <td class="text-right">{{ inv.vat_total|vnd }} ₫</td>
+      <td class="text-right font-semibold">{{ inv.grand_total|vnd }} ₫</td>
+      <td><a href="/invoices/{{ inv.id }}" class="text-sky-600 hover:underline">xem</a></td>
+    </tr>
+  {% else %}
+    <tr><td colspan="8" class="p-6 text-center text-slate-400">Chưa có hoá đơn — tạo từ trang "Đơn hàng"</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}
