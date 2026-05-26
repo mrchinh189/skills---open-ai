@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="text-2xl font-bold mb-4">Phiếu lương — {{ emp.full_name }}</h1>
+
+<form method="get" class="bg-white shadow rounded-lg p-4 mb-4 flex gap-3 flex-wrap items-end">
+  <label class="text-sm"><span class="block">Ngày công</span><input name="days" value="{{ days }}" class="border rounded px-3 py-2 w-24" /></label>
+  <label class="text-sm"><span class="block">OT thường (h)</span><input name="ot_n" value="{{ ot_n }}" class="border rounded px-3 py-2 w-24" /></label>
+  <label class="text-sm"><span class="block">OT cuối tuần (h)</span><input name="ot_w" value="{{ ot_w }}" class="border rounded px-3 py-2 w-24" /></label>
+  <label class="text-sm"><span class="block">OT lễ (h)</span><input name="ot_h" value="{{ ot_h }}" class="border rounded px-3 py-2 w-24" /></label>
+  <button class="bg-slate-900 text-white px-4 py-2 rounded">Tính lại</button>
+</form>
+
+{% if result %}
+<div class="bg-white shadow rounded-lg p-6 max-w-xl">
+  <table class="w-full text-sm">
+    <tr class="border-b"><td class="py-2">Lương cơ bản</td><td class="text-right">{{ emp.base_salary|vnd }} ₫</td></tr>
+    <tr class="border-b"><td class="py-2">Số người phụ thuộc</td><td class="text-right">{{ emp.dependents }}</td></tr>
+    <tr class="border-b"><td class="py-2 font-semibold">Lương gộp (gross)</td><td class="text-right">{{ result.gross|vnd }} ₫</td></tr>
+    <tr class="border-b text-rose-600"><td class="py-2">− Bảo hiểm bắt buộc (10.5%)</td><td class="text-right">{{ result.social_insurance|vnd }} ₫</td></tr>
+    <tr class="border-b"><td class="py-2 text-slate-500 text-xs">Thu nhập chịu thuế</td><td class="text-right text-xs">{{ result.taxable|vnd }} ₫</td></tr>
+    <tr class="border-b text-rose-600"><td class="py-2">− Thuế TNCN (luỹ tiến)</td><td class="text-right">{{ result.pit|vnd }} ₫</td></tr>
+    <tr class="text-emerald-700 text-lg font-bold"><td class="py-3">= Thực nhận (net)</td><td class="text-right">{{ result.net|vnd }} ₫</td></tr>
+  </table>
+  <p class="text-xs text-slate-500 mt-4">Áp dụng giảm trừ bản thân 11tr + NPT 4.4tr/người · BHXH 8% + BHYT 1.5% + BHTN 1%.</p>
+</div>
+{% endif %}
+{% endblock %}

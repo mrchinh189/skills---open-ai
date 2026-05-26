@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="text-2xl font-bold mb-4">Khách hàng mới</h1>
+{% if error %}<div class="bg-rose-100 text-rose-700 p-3 rounded mb-4">{{ error }}</div>{% endif %}
+<form method="post" action="/customers/new" class="bg-white shadow rounded-lg p-6 grid grid-cols-2 gap-4 max-w-3xl">
+  <label class="block col-span-2">
+    <span class="text-sm">Tên đầy đủ *</span>
+    <input name="name" required class="w-full border rounded px-3 py-2" />
+  </label>
+  <label class="block">
+    <span class="text-sm">Mã số thuế (10 hoặc 13 số)</span>
+    <input name="tax_code" class="w-full border rounded px-3 py-2" placeholder="0123456789" />
+  </label>
+  <label class="block">
+    <span class="text-sm">Điện thoại</span>
+    <input name="phone" class="w-full border rounded px-3 py-2" />
+  </label>
+  <label class="block">
+    <span class="text-sm">Email</span>
+    <input name="email" type="email" class="w-full border rounded px-3 py-2" />
+  </label>
+  <label class="block col-span-2">
+    <span class="text-sm">Địa chỉ</span>
+    <textarea name="address" rows="2" class="w-full border rounded px-3 py-2"></textarea>
+  </label>
+
+  <fieldset class="col-span-2 border rounded p-3">
+    <legend class="text-sm font-semibold px-2">Chấm điểm BANT (lead scoring)</legend>
+    <div class="grid grid-cols-2 gap-2 text-sm">
+      {% for key, weight in criteria.items() %}
+      <label class="flex items-center gap-2">
+        <input type="checkbox" name="{{ key }}" value="true" />
+        <span>{{ key }} (+{{ weight }})</span>
+      </label>
+      {% endfor %}
+    </div>
+    <p class="text-xs text-slate-500 mt-2">≥ 70 điểm → tự động chuyển trạng thái QUALIFIED.</p>
+  </fieldset>
+
+  <div class="col-span-2 flex gap-2">
+    <button class="bg-slate-900 text-white px-4 py-2 rounded">Lưu</button>
+    <a href="/customers" class="px-4 py-2 rounded border">Huỷ</a>
+  </div>
+</form>
+{% endblock %}

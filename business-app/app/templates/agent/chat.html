@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="grid md:grid-cols-3 gap-6">
+  <div class="md:col-span-2">
+    <h1 class="text-2xl font-bold mb-4">🤖 Agent Doanh nghiệp (RAG + Skills)</h1>
+    <form method="post" action="/agent" class="bg-white shadow rounded-lg p-4 mb-4">
+      <textarea name="query" rows="3" class="w-full border rounded px-3 py-2"
+        placeholder="Ví dụ: Tính lương net cho lương cơ bản 20 triệu, 1 người phụ thuộc, có 8 giờ OT thường?">{{ query }}</textarea>
+      <div class="flex justify-between items-center mt-2">
+        <p class="text-xs text-slate-500">Agent sẽ chọn skill phù hợp + tra cứu tài liệu nội bộ.</p>
+        <button class="bg-slate-900 text-white px-4 py-2 rounded">Gửi</button>
+      </div>
+    </form>
+
+    {% if result %}
+    <div class="bg-white shadow rounded-lg p-6">
+      <div class="flex gap-2 text-xs mb-3">
+        <span class="px-2 py-1 rounded bg-slate-100">Mode: {{ result.mode }}</span>
+        {% if result.skill_used %}<span class="px-2 py-1 rounded bg-emerald-100 text-emerald-700">Skill: {{ result.skill_used }}</span>{% endif %}
+        {% if matched_docs %}<span class="px-2 py-1 rounded bg-sky-100 text-sky-700">Docs: {{ matched_docs }}</span>{% endif %}
+      </div>
+      <pre class="whitespace-pre-wrap font-sans text-sm">{{ result.answer }}</pre>
+    </div>
+    {% endif %}
+  </div>
+
+  <aside class="bg-white shadow rounded-lg p-4">
+    <h3 class="font-semibold mb-3">Skills đang tải ({{ skills|length }})</h3>
+    <ul class="space-y-3 text-sm">
+      {% for s in skills %}
+      <li class="border-l-2 border-emerald-500 pl-3">
+        <p class="font-semibold">{{ s.name }}</p>
+        <p class="text-xs text-slate-500">{{ s.description[:120] }}…</p>
+      </li>
+      {% endfor %}
+    </ul>
+  </aside>
+</div>
+{% endblock %}

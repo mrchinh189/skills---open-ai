@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="flex justify-between items-center mb-4">
+  <h1 class="text-2xl font-bold">Đơn hàng</h1>
+  <a href="/orders/new" class="bg-slate-900 text-white px-4 py-2 rounded">+ Đơn hàng mới</a>
+</div>
+<div class="bg-white rounded-lg shadow overflow-x-auto">
+<table class="w-full text-sm">
+  <thead class="bg-slate-50 text-left">
+    <tr><th class="p-3">Mã</th><th>Khách hàng</th><th>Trạng thái</th>
+      <th class="text-right">Tiền hàng</th><th class="text-right">VAT</th>
+      <th class="text-right">Tổng</th><th></th></tr>
+  </thead>
+  <tbody>
+  {% for o in items %}
+    <tr class="border-t">
+      <td class="p-3 font-mono">{{ o.code }}</td>
+      <td>{{ o.customer.name }}</td>
+      <td><span class="text-xs px-2 py-1 bg-slate-100 rounded">{{ o.status.value }}</span></td>
+      <td class="text-right">{{ o.total|vnd }} ₫</td>
+      <td class="text-right">{{ o.vat_total|vnd }} ₫</td>
+      <td class="text-right font-semibold">{{ o.grand_total|vnd }} ₫</td>
+      <td class="space-x-1">
+        {% if o.status.value == "draft" %}
+        <form method="post" action="/orders/{{ o.id }}/confirm" class="inline">
+          <button class="text-xs bg-emerald-600 text-white px-2 py-1 rounded">Xác nhận</button>
+        </form>
+        {% endif %}
+        {% if o.status.value in ["confirmed","shipped"] %}
+        <form method="post" action="/invoices/from-order/{{ o.id }}" class="inline">
+          <button class="text-xs bg-violet-600 text-white px-2 py-1 rounded">→ Hoá đơn</button>
+        </form>
+        {% endif %}
+      </td>
+    </tr>
+  {% else %}
+    <tr><td colspan="7" class="p-6 text-center text-slate-400">Chưa có đơn hàng</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}

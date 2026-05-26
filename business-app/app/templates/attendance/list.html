@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="text-2xl font-bold mb-4">Chấm công</h1>
+
+<form method="post" action="/attendance/new" class="bg-white shadow rounded-lg p-4 mb-6 grid grid-cols-5 gap-3 items-end">
+  <label class="text-sm"><span class="block">Nhân viên</span>
+    <select name="employee_id" required class="border rounded px-3 py-2 w-full">
+      {% for e in employees %}<option value="{{ e.id }}">{{ e.code }} - {{ e.full_name }}</option>{% endfor %}
+    </select>
+  </label>
+  <label class="text-sm"><span class="block">Ngày</span><input name="work_date" type="date" required class="border rounded px-3 py-2 w-full" /></label>
+  <label class="text-sm"><span class="block">Giờ làm</span><input name="hours" type="number" step="0.5" value="8" class="border rounded px-3 py-2 w-full" /></label>
+  <label class="text-sm"><span class="block">Giờ OT</span><input name="ot_hours" type="number" step="0.5" value="0" class="border rounded px-3 py-2 w-full" /></label>
+  <button class="bg-slate-900 text-white px-4 py-2 rounded">+ Chấm công</button>
+</form>
+
+<div class="bg-white rounded-lg shadow overflow-x-auto">
+<table class="w-full text-sm">
+  <thead class="bg-slate-50 text-left"><tr><th class="p-3">Ngày</th><th>Nhân viên</th><th>Giờ làm</th><th>Giờ OT</th><th>Ghi chú</th></tr></thead>
+  <tbody>
+  {% for a in items %}
+    <tr class="border-t">
+      <td class="p-3">{{ a.work_date }}</td>
+      <td>{{ a.employee.full_name }}</td>
+      <td>{{ a.hours }}</td>
+      <td>{{ a.ot_hours }}</td>
+      <td>{{ a.note or "-" }}</td>
+    </tr>
+  {% else %}
+    <tr><td colspan="5" class="p-6 text-center text-slate-400">Chưa có dữ liệu</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}

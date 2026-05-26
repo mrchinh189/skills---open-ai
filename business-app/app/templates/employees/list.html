@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="flex justify-between items-center mb-4">
+  <h1 class="text-2xl font-bold">Nhân sự</h1>
+  <a href="/employees/new" class="bg-slate-900 text-white px-4 py-2 rounded">+ Thêm nhân viên</a>
+</div>
+<div class="bg-white rounded-lg shadow overflow-x-auto">
+<table class="w-full text-sm">
+  <thead class="bg-slate-50 text-left">
+    <tr><th class="p-3">Mã NV</th><th>Họ tên</th><th>Vị trí</th><th>Phòng ban</th>
+      <th class="text-right">Lương cơ bản</th><th>NPT</th><th></th></tr>
+  </thead>
+  <tbody>
+  {% for e in items %}
+    <tr class="border-t">
+      <td class="p-3 font-mono">{{ e.code }}</td>
+      <td>{{ e.full_name }}</td>
+      <td>{{ e.position or "-" }}</td>
+      <td>{{ e.department or "-" }}</td>
+      <td class="text-right">{{ e.base_salary|vnd }} ₫</td>
+      <td class="text-center">{{ e.dependents }}</td>
+      <td><a class="text-sky-600 hover:underline text-xs" href="/employees/{{ e.id }}/payroll">Tính lương</a></td>
+    </tr>
+  {% else %}
+    <tr><td colspan="7" class="p-6 text-center text-slate-400">Chưa có nhân viên</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}

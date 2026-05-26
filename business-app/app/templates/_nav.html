@@ -1,0 +1,18 @@
+<nav class="bg-slate-900 text-slate-100 shadow">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex items-center gap-6 flex-wrap">
+    <a href="/" class="font-bold text-lg">🏢 VBiz</a>
+    <a href="/" class="hover:text-amber-300">Dashboard</a>
+    <a href="/customers" class="hover:text-amber-300">Khách hàng</a>
+    <a href="/products" class="hover:text-amber-300">Sản phẩm</a>
+    <a href="/orders" class="hover:text-amber-300">Đơn hàng</a>
+    <a href="/invoices" class="hover:text-amber-300">Hoá đơn</a>
+    <a href="/employees" class="hover:text-amber-300">Nhân sự</a>
+    <a href="/attendance" class="hover:text-amber-300">Chấm công</a>
+    <a href="/documents" class="hover:text-amber-300">Tài liệu</a>
+    <a href="/agent" class="hover:text-amber-300">🤖 Agent</a>
+    <div class="ml-auto flex items-center gap-3 text-sm">
+      <span class="text-slate-300">{{ user.full_name }} · {{ user.role.value }}</span>
+      <a href="/logout" class="bg-rose-600 hover:bg-rose-700 px-3 py-1 rounded">Đăng xuất</a>
+    </div>
+  </div>
+</nav>
